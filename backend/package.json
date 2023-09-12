@@ -4,6 +4,7 @@
   "description": "NYU MERN milestone project We created a Movie rating website. By: Nathaniel Abramov, Jaya Ramkumar, Shanika Scott",
   "main": "index.js",
   "scripts": {
+    "start": "npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
