@@ -25,6 +25,7 @@ function movies (data) {
           <p className="text-center">
             {movie.duration}
           </p>
+          
           <img src={movie.pic} alt={movie.name}/>
         </div>
       )
