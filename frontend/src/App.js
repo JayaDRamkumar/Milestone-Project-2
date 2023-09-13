@@ -1,19 +1,15 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import './App.css';
+import React from 'react'
 
-import Home from './components/Home'
-import About from './components/About'
+import AppNavbar from './components/Navbar'
+
 
 function App() {
   return (
     <div className="App">
-     <Router>
-      <Navbar />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/about" component={About} />
-      </Switch>
-    </Router>
+      <AppNavbar />
+      <div className="container">
+        {/* Your content goes here */}
+      </div>
     </div>
   );
 }
