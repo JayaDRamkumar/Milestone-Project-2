@@ -1,7 +1,7 @@
 # Milestone-Project-2
 NYU MERN milestone project
 We created a Movie rating website.
-By: Nathaniel Abramov, Jaya Ramkumar, Shanika Scott
+By: Nathaniel Abramov, Jaya Ramkumar, Shanika Scott, Khamil Holub
 
 Basic Requirements:
     -Main Page
