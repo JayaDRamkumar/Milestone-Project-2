@@ -9,6 +9,7 @@ app.engine('jsx', require('express-react-views').createEngine())
 
 app.use('/movies', require('./controllers/movies.js'))
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
 
 
 
