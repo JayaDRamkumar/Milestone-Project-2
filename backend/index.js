@@ -55,3 +55,12 @@ app.get('/', (req, res) => {
 
 app.listen(process.env.PORT)
 
+
+
+
+const mongoose = require('mongoose')
+
+/* remnants of server.js .... goodbye
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}, 
+    () => { console.log('connected to mongo: ', process.env.MONGO_URI) }
+  )*/
