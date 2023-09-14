@@ -1,6 +1,6 @@
 import React from 'react'
 
-function error404 () {
+export default function error404 () {
     return (
       <Def>
           <main>
