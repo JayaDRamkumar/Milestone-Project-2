@@ -2,17 +2,15 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-
+const mongoose = require('mongoose')
 app.set('view engine', 'jsx')
 app.engine('jsx', require('express-react-views').createEngine())
+
 
 
 app.use('/movies', require('./controllers/movies.js'))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
-
-
-
 
 
 app.get('/', (req, res) => {
@@ -51,16 +49,27 @@ app.get('/', (req, res) => {
 //     res.status(404).send('<h1>404 Page</h1>')
 // })
 
+// mongoose.connect(process.env.MONGO_URI, {
+//   useNewUrlParser: true, 
+//   useUnifiedTopology: true}, 
+//   () => { console.log(`connected to mongo:, ${process.env.MONGO_URI}`) }
+// )
+async function connectToDatabase() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error.message);
+  }
+}
+
+connectToDatabase();
 
 
-app.listen(process.env.PORT)
-
-
-
-
-const mongoose = require('mongoose')
-
-/* remnants of server.js .... goodbye
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true}, 
-    () => { console.log('connected to mongo: ', process.env.MONGO_URI) }
-  )*/
+  app.listen(process.env.PORT, () => {
+    console.log(`Listening on ${process.env.PORT}`)
+  })
+  
