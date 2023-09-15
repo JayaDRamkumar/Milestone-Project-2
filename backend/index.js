@@ -49,11 +49,7 @@ app.get('/', (req, res) => {
 //     res.status(404).send('<h1>404 Page</h1>')
 // })
 
-// mongoose.connect(process.env.MONGO_URI, {
-//   useNewUrlParser: true, 
-//   useUnifiedTopology: true}, 
-//   () => { console.log(`connected to mongo:, ${process.env.MONGO_URI}`) }
-// )
+
 async function connectToDatabase() {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
