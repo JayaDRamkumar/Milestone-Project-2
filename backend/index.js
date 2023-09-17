@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors());
 app.use(express.json());
 
+app.use('/movies', require('./controllers/movies'))
 app.get('/', (req, res) => {
     res.render('home')
   })
