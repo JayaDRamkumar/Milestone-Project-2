@@ -1,141 +1,108 @@
 const db = require('../models')
-const movies = express.Router()
-const router = require ('express').Router
+const router = require ('express').Router()
 
 const { Movie, Review, User } = db
 
-movies.get('/seed', (req, res) => {
-  Movie.insertMany([{
-    "title":"Scream",
-    "pic":"https://wwwimage-us.pplusstatic.com/thumbnails/photos/w370-q80/movie_asset/86/10/14/s6jo_us_2023_poster_1400x2100_nb.jpg",
-    "genre":"Horror",
-    "releaseYear":"2023",
-    "rated": "R",
-    duration:"122"
-  },
-{
-  "title":"Mean Girls",
-    "pic":"https://images-na.ssl-images-amazon.com/images/S/pv-target-images/203c64f4e4b730f90e528076a0fb22c3cc2e9ed4cd3cc9a06f588fe8701b3639._UY500_UX667_RI_TTW_.jpg",
-    "genre":"Comedy",
-    "releaseYear":"2004",
-    "rated": "PG-13",
-    duration:"96"
-},
-{
-  "title":"Forrest Gump",
-  "pic":"https://flxt.tmsimg.com/assets/p15829_v_v13_aa.jpg",
-  "genre":"Drama",
-  "releaseYear":"1994",
-  "rated": "PG-13",
-  duration:"142"
-}])
-.then(res.status(200).json({
-  message: 'Seed successful'
-}))
-.catch(res.status(400).json({
-  message: 'Seed unsuccessful'
-}))
+
+router.post('/', async (req, res) => {
+  if (!req.body.title) {
+    req.body.title = 'Any Title'
+}
+  if (!req.body.pic) {
+      req.body.pic = 'http://placekitten.com/400/400'
+  }
+  if (!req.body.genre) {
+      req.body.city = 'comedy'
+  }
+  if (!req.body.releaseYear) {
+      req.body.state = '2023'
+  }
+  if (!req.body.rated) {
+    req.body.state = 'R'
+}
+if (!req.body.duration) {
+  req.body.state = '100'
+}
+  const movie = await Movie.create(req.body)
+  res.json(movie)
 })
 
 // Get all movies
 router.get('/', async (req, res) => {
-  try {
-   movies = await Movie.find();
-    res.json(movies);
-  } catch (error) {
-    console.error('Error fetching movies:', error);
-    res.status(500).json({ error: 'Unable to fetch movies' });
-  }
+  const movies = await Movie.findAll()
+  res.json(movies)
 })
 
 //Get a single movie by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const movie = await Movie.findById(req.params.id);
-    if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
-    }
-    res.json(movie);
-  } catch (error) {
-    console.error('Error fetching a movie by ID:', error);
-    res.status(500).json({ error: 'Unable to fetch the movie' });
+router.get('/:movieId', async (req, res) => {
+  let movieId = Number(req.params.movieId)
+  if (isNaN(movieIdId)) {
+      res.status(404).json({ message: `Invalid id "${movieId}"` })
+  } else {
+      const movie = await Movie.findOne({
+          where: { movieId: movieId },
+          include: {
+              association: 'review',
+              include: 'user'
+          }
+      })
+      if (!movie) {
+          res.status(404).json({ message: `Could not find place with id "${movieId}"` })
+      } else {
+          res.json(movie)
+      }
   }
 })
 
-// router.get('/', (req, res) => {
-//   db.Movie.find()
-//   .then((movies) => {
-//     res.render('movies/index', { movies })
+router.put('/:movieId', async (req, res) => {
+  let movieId = Number(req.params.movieId)
+  if (isNaN(movieId)) {
+      res.status(404).json({ message: `Invalid id "${movieId}"` })
+  } else {
+      const movie = await Movie.findOne({
+          where: { movieId: movieId },
+      })
+      if (!movie) {
+          res.status(404).json({ message: `Could not find movie with id "${movieId}"` })
+      } else {
+          Object.assign(movie, req.body)
+          await movie.save()
+          res.json(movie)
+      }
+  }
+})
+
+// router.post('/:placeId/reviews', async (req, res) => {
+//   const movieId = Number(req.params.movieId)
+
+//   req.body.rant = req.body.rant ? true : false
+
+//   const place = await Place.findOne({
+//       where: { placeId: placeId }
 //   })
-//   .catch(err => {
-//     console.log(err) 
-//     res.render('error404')
+
+//   if (!place) {
+//       res.status(404).json({ message: `Could not find place with id "${placeId}"` })
+//   }
+
+//   const author = await User.findOne({
+//       where: { userId: req.body.authorId }
+//   })
+
+//   if (!author) {
+//       res.status(404).json({ message: `Could not find author with id "${req.body.authorId}"` })
+//   }
+
+//   const comment = await Comment.create({
+//       ...req.body,
+//       placeId: placeId
+//   })
+
+//   res.send({
+//       ...comment.toJSON(),
+//       author
 //   })
 // })
-
-// router.post('/', (req, res) => {
-// res.send('POST /movies stub')
-// })
-
-// router.get('/new', (req, res) => {
-// res.render('movies/new')
-// })
-
-// router.get('/:id', (req, res) => {
-// res.send('GET /movies/:id stub')
-// })
-
-// router.put('/:id', (req, res) => {
-// res.send('PUT /movies/:id stub')
-// })
-
-// router.delete('/:id', (req, res) => {
-// res.send('DELETE /movies/:id stub')
-// })
-
-// router.get('/:id/edit', (req, res) => {
-// res.send('GET edit form stub')
-// })
-
-// router.post('/:id/rant', (req, res) => {
-// res.send('GET /places/:id/rant stub')
-// })
-
-// router.delete('/:id/rant/:rantId', (req, res) => {
-//   res.send('GET /places/:id/rant/:rantId stub')
-// })
-// // router.get('/', (req, res) => {
-// //     res.render('movies', {movies})
-// // })
-
-// // router.get('/new', (req, res) => {
-// //     res.render('new')
-// //   })
-
-// //   router.get('/:id', (req, res) => {
-// //     res.send('GET /movies/:id stub')
-// //   })
-  
-// //   router.put('/:id', (req, res) => {
-// //     res.send('PUT /movies/:id stub')
-// //   })
-  
-// //   router.delete('/:id', (req, res) => {
-// //     res.send('DELETE /movies/:id stub')
-// //   })
-  
-// //   router.get('/:id/edit', (req, res) => {
-// //     res.send('GET edit form stub')
-// //   })
-  
-// //   router.post('/:id/rant', (req, res) => {
-// //     res.send('GET /movies/:id/rant stub')
-// //   })
-  
-// //   router.delete('/:id/rant/:rantId', (req, res) => {
-// //       res.send('GET /movies/:id/rant/:rantId stub')
-// //   })
-  
 
 
 //   // router.get('/:id', (req, res) => {
@@ -289,11 +256,44 @@ router.get('/:id', async (req, res) => {
 //   }
 // })
 
-const router = require('express').Router()
-const db = require ("../models")
+// const router = require('express').Router()
+// const db = require ("../models")
 
-router.get('/', async (req, res) => {
-  const movies = await Movie.findAll()
-  res.json(movies)
-})
-module.exports = router
+// router.get('/', async (req, res) => {
+//   const movies = await Movie.findAll()
+//   res.json(movies)
+// })
+// module.exports = router
+
+// movies.get('/seed', (req, res) => {
+//   Movie.insertMany([{
+//     "title":"Scream",
+//     "pic":"https://wwwimage-us.pplusstatic.com/thumbnails/photos/w370-q80/movie_asset/86/10/14/s6jo_us_2023_poster_1400x2100_nb.jpg",
+//     "genre":"Horror",
+//     "releaseYear":"2023",
+//     "rated": "R",
+//     duration:"122"
+//   },
+// {
+//   "title":"Mean Girls",
+//     "pic":"https://images-na.ssl-images-amazon.com/images/S/pv-target-images/203c64f4e4b730f90e528076a0fb22c3cc2e9ed4cd3cc9a06f588fe8701b3639._UY500_UX667_RI_TTW_.jpg",
+//     "genre":"Comedy",
+//     "releaseYear":"2004",
+//     "rated": "PG-13",
+//     duration:"96"
+// },
+// {
+//   "title":"Forrest Gump",
+//   "pic":"https://flxt.tmsimg.com/assets/p15829_v_v13_aa.jpg",
+//   "genre":"Drama",
+//   "releaseYear":"1994",
+//   "rated": "PG-13",
+//   duration:"142"
+// }])
+// .then(res.status(200).json({
+//   message: 'Seed successful'
+// }))
+// .catch(res.status(400).json({
+//   message: 'Seed unsuccessful'
+// }))
+// })

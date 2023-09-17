@@ -6,20 +6,12 @@ const app = express()
 const mongoose = require('mongoose')
 
 
-app.set('view engine', 'jsx')
-app.engine('jsx', require('express-react-views').createEngine())
-
-
 app.use('/movies', require('./controllers/movies.js'))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(cors());
 app.use(express.json());
 
-app.use('/movies', require('./controllers/movies'))
-app.get('/', (req, res) => {
-    res.render('home')
-  })
   
   app.get('*', (req, res) => {
     res.render('error404')
@@ -27,7 +19,11 @@ app.get('/', (req, res) => {
   
   
 // app.get('/', function (req, res) {
-//     res.send(` 
+//     res.send("home")
+//   })
+
+
+
 //     <body style="margin: 0;">
 //         <div style="border: 1px solid black; height: 10vh; background-color: white;">
 //         <h2 style="text-align: center;">NAV BAR</h2>
