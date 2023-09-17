@@ -11,6 +11,7 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true
 })
 
+module.exports.Movie = require('./models/movies')
 
 app.set('view engine', 'jsx')
 app.engine('jsx', require('express-react-views').createEngine())
