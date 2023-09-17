@@ -26,3 +26,4 @@ function new_review () {
         </Def>
     )
 }
+module.exports = new_review

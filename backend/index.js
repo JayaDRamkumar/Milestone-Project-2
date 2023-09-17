@@ -1,6 +1,6 @@
-
 require('dotenv').config()
 const express = require('express')
+const cors = require('cors')
 const app = express()
 
 const mongoose = require('mongoose')
@@ -13,7 +13,8 @@ app.engine('jsx', require('express-react-views').createEngine())
 app.use('/movies', require('./controllers/movies.js'))
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
-
+app.use(cors());
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.render('home')
