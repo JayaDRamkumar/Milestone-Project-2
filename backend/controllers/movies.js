@@ -1,6 +1,3 @@
-
-
-
 // router.get('/', (req, res) => {
 //   db.Movie.find()
 //   .then((movies) => {

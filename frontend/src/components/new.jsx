@@ -2,6 +2,8 @@ const React = require('react')
 const Def = require('./default')
 
 function new_form () {
+
+    
     return (
         <Def>
           <main>
