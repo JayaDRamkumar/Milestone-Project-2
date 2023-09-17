@@ -13,8 +13,8 @@ mongoose.connect(process.env.MONGO_URI, {
 
 module.exports.Movie = require('./models/movies')
 
-app.set('view engine', 'jsx')
-app.engine('jsx', require('express-react-views').createEngine())
+// app.set('view engine', 'jsx')
+// app.engine('jsx', require('express-react-views').createEngine())
 
 
 app.use('/movies', require('./controllers/movies.js'))

@@ -3,6 +3,10 @@
 #didnt work unless placed here? I dont know
 frontend/.env
 backend/.env
+frontend/package-lock.json
+backend/package-lock.json
+frontend/node_modules
+backend/node_modules
 
 # dependencies
 /node_modules
