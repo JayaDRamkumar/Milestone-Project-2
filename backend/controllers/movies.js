@@ -1,35 +1,33 @@
 const db = require('../models')
 const router = require ('express').Router()
 
-const { Movie, Review, User } = db
+const { Movies, Review, User } = db
 
 
 router.post('/', async (req, res) => {
   if (!req.body.title) {
     req.body.title = 'Any Title'
 }
+  if (!req.body.rated) {
+  req.body.rated = 'R'
+}
   if (!req.body.pic) {
       req.body.pic = 'http://placekitten.com/400/400'
   }
   if (!req.body.genre) {
-      req.body.city = 'comedy'
+      req.body.genre = 'comedy'
   }
-  if (!req.body.releaseYear) {
-      req.body.state = '2023'
-  }
-  if (!req.body.rated) {
-    req.body.state = 'R'
-}
 if (!req.body.duration) {
-  req.body.state = '100'
+  req.body.duration = '100'
 }
-  const movie = await Movie.create(req.body)
+  const movie = await Movies.create(req.body)
   res.json(movie)
 })
 
 // Get all movies
 router.get('/', async (req, res) => {
-  const movies = await Movie.findAll()
+  const movies = await Movies.find()
+  console.log(movies)
   res.json(movies)
 })
 
@@ -39,7 +37,7 @@ router.get('/:movieId', async (req, res) => {
   if (isNaN(movieIdId)) {
       res.status(404).json({ message: `Invalid id "${movieId}"` })
   } else {
-      const movie = await Movie.findOne({
+      const movie = await Movies.findOne({
           where: { movieId: movieId },
           include: {
               association: 'review',
@@ -59,7 +57,7 @@ router.put('/:movieId', async (req, res) => {
   if (isNaN(movieId)) {
       res.status(404).json({ message: `Invalid id "${movieId}"` })
   } else {
-      const movie = await Movie.findOne({
+      const movie = await Movies.findOne({
           where: { movieId: movieId },
       })
       if (!movie) {
@@ -71,6 +69,8 @@ router.put('/:movieId', async (req, res) => {
       }
   }
 })
+
+module.exports = router
 
 // router.post('/:placeId/reviews', async (req, res) => {
 //   const movieId = Number(req.params.movieId)
@@ -263,7 +263,7 @@ router.put('/:movieId', async (req, res) => {
 //   const movies = await Movie.findAll()
 //   res.json(movies)
 // })
-// module.exports = router
+module.exports = router
 
 // movies.get('/seed', (req, res) => {
 //   Movie.insertMany([{

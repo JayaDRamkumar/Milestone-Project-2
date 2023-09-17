@@ -1,1 +1,1 @@
-module.exports.Movie = require('./movies')
+module.exports.Movies = require('./movies')
