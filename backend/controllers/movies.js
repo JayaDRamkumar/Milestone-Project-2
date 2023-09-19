@@ -1,7 +1,7 @@
-const db = require('../models')
 const router = require ('express').Router()
+const Movies = require('../models/movies')
+const Review = require('../models/review')
 
-const { Movies, Review, User } = db
 
 
 router.post('/', async (req, res) => {
@@ -9,13 +9,14 @@ router.post('/', async (req, res) => {
     req.body.title = 'Any Title'
 }
   if (!req.body.rated) {
-  req.body.rated = 'R'
+  req.body.rated = 'Anytown'
 }
   if (!req.body.pic) {
-      req.body.pic = 'http://placekitten.com/400/400'
+      // Default image if one is not provided
+      req.body.pic = 'https://media.istockphoto.com/id/1454928178/photo/customer-choose-emoji-emoticons-happy-mood-on-emotions-satisfaction-meter-evaluation-increase.webp?b=1&s=170667a&w=0&k=20&c=_eiKzMXlSXPTUAVHRC15DynEiNsOV5CtUHSM9-3anEQ='
   }
   if (!req.body.genre) {
-      req.body.genre = 'comedy'
+      req.body.genre = 'Not Advised For Users'
   }
 if (!req.body.duration) {
   req.body.duration = '100'
@@ -26,244 +27,120 @@ if (!req.body.duration) {
 
 // Get all movies
 router.get('/', async (req, res) => {
+  try{
   const movies = await Movies.find()
   console.log(movies)
   res.json(movies)
+}catch(error){
+  console.error('Error fecthing movies:', error)
+  res.status(500).json({error: 'Unable to fetch movies'})
+}
 })
 
 //Get a single movie by ID
-router.get('/:movieId', async (req, res) => {
-  let movieId = Number(req.params.movieId)
-  if (isNaN(movieIdId)) {
-      res.status(404).json({ message: `Invalid id "${movieId}"` })
-  } else {
-      const movie = await Movies.findOne({
-          where: { movieId: movieId },
-          include: {
-              association: 'review',
-              include: 'user'
-          }
-      })
-      if (!movie) {
-          res.status(404).json({ message: `Could not find place with id "${movieId}"` })
-      } else {
-          res.json(movie)
-      }
-  }
-})
+router.get('/:id', async (req, res) => {
+  try {
+    const movie = await Movies.findById(req.params.id);
 
-router.put('/:movieId', async (req, res) => {
-  let movieId = Number(req.params.movieId)
-  if (isNaN(movieId)) {
-      res.status(404).json({ message: `Invalid id "${movieId}"` })
-  } else {
-      const movie = await Movies.findOne({
-          where: { movieId: movieId },
-      })
-      if (!movie) {
-          res.status(404).json({ message: `Could not find movie with id "${movieId}"` })
-      } else {
-          Object.assign(movie, req.body)
-          await movie.save()
-          res.json(movie)
-      }
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    res.json(movie);
+  } catch (error) {
+    console.error('Error fetching a movie by ID:', error);
+    res.status(500).json({ error: 'Unable to fetch the movie' });
   }
-})
+});
+
+
+// Update a movie by ID
+router.put('/:id', async (req, res) => {
+  try {
+    const { title, rated, pic, genre, duration } = req.body;
+
+    if (!title || !rated || !pic || !genre || !duration) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    const updatedMovie = await Movies.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        rated,
+        pic,
+        genre,
+        duration,
+      },
+      { new: true } // Return the updated movie
+    );
+
+    if (!updatedMovie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    res.json(updatedMovie);
+  } catch (error) {
+    console.error('Error updating a movie:', error);
+    res.status(500).json({ error: 'Unable to update the movie' });
+  }
+});
+
+// Add a review
+router.post('/:id/reviews', async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+
+    if (!rating || !comment) {
+      return res.status(400).json({ error: 'Rating and comment are required' });
+    }
+
+    const movie = await Movies.findById(req.params.id);
+
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    const review = new Review({
+      movie: req.params.id,
+      rating,
+      comment,
+    });
+
+    await review.save();
+    res.status(201).json(review);
+  } catch (error) {
+    console.error('Error creating a review:', error);
+    res.status(500).json({ error: 'Unable to create a review' });
+  }
+
+});
+
+
+// Delete a movie review by ID
+router.delete('/reviews/:reviewId', async (req, res) => {
+  try {
+    const deletedReview = await Review.findByIdAndDelete(req.params.reviewId);
+
+    if (!deletedReview) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    res.json({ message: 'Review deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting a review:', error);
+    res.status(500).json({ error: 'Unable to delete the review' });
+  }
+});
+
+
 
 module.exports = router
 
-// router.post('/:placeId/reviews', async (req, res) => {
-//   const movieId = Number(req.params.movieId)
 
-//   req.body.rant = req.body.rant ? true : false
-
-//   const place = await Place.findOne({
-//       where: { placeId: placeId }
-//   })
-
-//   if (!place) {
-//       res.status(404).json({ message: `Could not find place with id "${placeId}"` })
-//   }
-
-//   const author = await User.findOne({
-//       where: { userId: req.body.authorId }
-//   })
-
-//   if (!author) {
-//       res.status(404).json({ message: `Could not find author with id "${req.body.authorId}"` })
-//   }
-
-//   const comment = await Comment.create({
-//       ...req.body,
-//       placeId: placeId
-//   })
-
-//   res.send({
-//       ...comment.toJSON(),
-//       author
-//   })
-// })
-
-
-//   // router.get('/:id', (req, res) => {
-//   //   let id = Number(req.params.id)
-//   //   if (isNaN(id)) {
-//   //     res.render('error404')
-//   //   }
-//   //   else if (!movies[id]) {
-//   //     res.render('error404')
-//   //   }
-//   //   else {
-//   //     res.render('movies/show', { movie: movies[id] })
-
-
-//   //   }
-//   // })
   
-//   // router.get('/:id', (req, res) => {
-//   //   res.render('movies/show')
-//   // })
+ 
   
-// //   // router.post('/', (req, res) => {
-    
-// //   //   if (!req.body.pic) {
-// //   //     // Default image if one is not provided
-// //   //     req.body.pic = 'https://media.istockphoto.com/id/1454928178/photo/customer-choose-emoji-emoticons-happy-mood-on-emotions-satisfaction-meter-evaluation-increase.webp?b=1&s=170667a&w=0&k=20&c=_eiKzMXlSXPTUAVHRC15DynEiNsOV5CtUHSM9-3anEQ='
-// //   //   }
-// //   //   if (!req.body.genre) {
-// //   //     req.body.genre = 'Anytown'
-// //   //   }
-// //   //   if (!req.body.rated) {
-// //   //     req.body.rated = 'Not Advised For Users'
-// //   //   }
-// //   //   if (!req.body.duration) {
-// //   //       req.body.duration = 'Not Advised For Users'
-// //   //     }
-// //   //   movies.push(req.body)
-// //   //   res.redirect('/movies')
-// //   // })
-  
-  
-  
-// // module.exports = router
-
-// const router = require('express').Router()
-// const places = require("../models/movies")
-
-
-// router.get('/', (req, res) => {
-//     res.render('moviess/index', {movies})
-// })
-
-// router.get('/new', (req, res) => {
-//   res.render('movies/new')
-// })
-
-// router.get('/:id', (req, res) => {
-//   let id = Number(req.params.id)
-//   if (isNaN(id)) {
-//     res.render('error404')
-//   }
-//   else if (!movies[id]) {
-//     res.render('error404')
-//   }
-//   else {
-//     res.render('movies/show', { movie: movies[id], id: id })
-//   }
-// })
-
-// router.get('/:id', (req, res) => {
-//   res.render('movies/show')
-// })
-
-// router.post('/', (req, res) => {
-//     console.log(req.body)
-//     if (!req.body.pic) {
-//       // Default image if one is not provided
-//       req.body.pic = 'https://media.istockphoto.com/id/1454928178/photo/customer-choose-emoji-emoticons-happy-mood-on-emotions-satisfaction-meter-evaluation-increase.webp?b=1&s=170667a&w=0&k=20&c=_eiKzMXlSXPTUAVHRC15DynEiNsOV5CtUHSM9-3anEQ='
-//     }
-//     if (!req.body.genre) {
-//       req.body.genre = 'Any Genre'
-//     }
-//     if (!req.body.rated) {
-//       req.body.rated = 'UNRATED'
-//     }
-//     if (!req.body.duration) {
-//               req.body.duration = 'Not Advised For Users'
-//             }
-//     places.push(req.body)
-//     res.redirect('/movies')
-// })
-
-
-
-// router.get('/:id/edit', (req, res) => {
-//   let id = Number(req.params.id)
-//   if (isNaN(id)) {
-//       res.render('error404')
-//   }
-//   else if (!places[id]) {
-//       res.render('error404')
-//   }
-//   else {
-//     res.render('movies/edit', { movie: movies[id], id: id })
-//   }
-// })
-
-// router.delete('/:id', (req, res) => {
-//   console.log(req.body)
-//   let id = Number(req.params.id)
-//   if (isNaN(id)) {
-//     res.render('error404')
-//   }
-//   else if (!places[id]) {
-//     res.render('error404')
-//   }
-//   else {
-//     places.splice(id, 1)
-//     res.redirect('/movies')
-//   }
-// })
-
-// router.put('/:id', (req, res) => {
-//   let id = Number(req.params.id)
-
-//   if (isNaN(id)) {
-//       res.render('error404')
-//   }
-//   else if (!places[id]) {
-//       res.render('error404')
-//   }
-//   else {
-//       // Dig into req.body and make sure data is valid
-//       if (!req.body.pic) {
-//         // Default image if one is not provided
-//         req.body.pic = 'https://media.istockphoto.com/id/1454928178/photo/customer-choose-emoji-emoticons-happy-mood-on-emotions-satisfaction-meter-evaluation-increase.webp?b=1&s=170667a&w=0&k=20&c=_eiKzMXlSXPTUAVHRC15DynEiNsOV5CtUHSM9-3anEQ='
-//       }
-//       if (!req.body.genre) {
-//         req.body.genre = 'Any Genre'
-//       }
-//       if (!req.body.rated) {
-//         req.body.rated = 'UNRATED'
-//       }
-//       if (!req.body.duration) {
-//                 req.body.duration = 'Not Advised For Users'
-//               }
-
-//       // Save the new data into places[id]
-//       movies[id] = req.body
-//       res.redirect(`/moviess/${id}`)
-//   }
-// })
-
-// const router = require('express').Router()
-// const db = require ("../models")
-
-// router.get('/', async (req, res) => {
-//   const movies = await Movie.findAll()
-//   res.json(movies)
-// })
-module.exports = router
 
 // movies.get('/seed', (req, res) => {
 //   Movie.insertMany([{

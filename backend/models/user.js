@@ -2,10 +2,8 @@
 const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  pic: String,
-  lastName: { type: String, required: true }
+  userName: { type: String, required: true }
   
 });
 
-module.exports = mongoose.model('User', movieSchema);
+module.exports = mongoose.model('User', userSchemaSchema);

@@ -1,15 +1,6 @@
 const React = require('react')
 const Def = require('./default')
-// function movies () {
-//     return (
-//       <Def>
-//           <main>
-//               <h1>Movie Page</h1>
-              
-//           </main>
-//       </Def>
-//     )
-//   }
+
   
 function movies (data) {
     let moviesFormatted = data.movies.map((movie) => {
