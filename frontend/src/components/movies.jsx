@@ -33,8 +33,7 @@ function movies (data) {
   )
   }
   
-
-module.exports = movies
+export default movies
 
 
 

@@ -78,6 +78,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 
+
 function AddReview({ onSubmit }) {
   const [review, setReview] = useState({
     content: "",
@@ -95,7 +96,7 @@ function AddReview({ onSubmit }) {
     onSubmit(review);
 
    
-    history.push("/addReview"); 
+    history.push("/"); 
   }
 
   return (

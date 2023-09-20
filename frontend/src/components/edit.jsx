@@ -60,4 +60,4 @@ function edit_form ({movie, id}) {
     )
 }
 
-module.exports = edit_form
+export default edit_form
