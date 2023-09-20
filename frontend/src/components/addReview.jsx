@@ -1,68 +1,97 @@
 const React = require('react')
 const Def = require('./default')
 
+import { useState, useEffect } from "react"
+import { useHistory } from "react-router"
 
-    const newReview = ({ onSubmit }) => {
-        const [name,setName ] = useState('')
-        const [rating, setRating] = useState('')
-        const [comment, setComment] = useState('')
-      
-        const handleSubmit = (e) => {
-          e.preventDefault()
+function AddReview({ movies, onSubmit }) {
 
-           // Validate the form data here if needed
-    if (!name || !rating || !comment) {
-      // Handle validation errors
-      return
+    const [movies, setMovies] = useState([])
+
+    const [review, setReview] = useState({
+        content: '',
+        stars: 3,
+        review: false,
+        authorId: ''
+    })
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(`http://localhost:5000/movies`)
+            const users = await response.json()
+            setComment({ ...comment, authorId: users[0]?.userId})
+            setAuthors(users)
+        }
+        fetchData()
+    }, [])
+
+    let authorOptions = authors.map(author => {
+        return <option key={author.userId} value={author.userId}>{author.firstName} {author.lastName}</option>
+    })
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        onSubmit(review)
+        setReview({
+            content: '',
+            stars: 3,
+            review: false,
+            authorId: authors[0]?.userId
+        })
     }
-    // Submit the form data
-    onSubmit({ name ,rating, comment })
-
-    // Clear the form fields
-    setName('')
-    setRating('')
-    setComment('')
-  }
+ 
     return (
-        <Def>
-          <main>
-            <h1>Add Your Movie Review</h1>
-                 <form method="POST" action="/movies">
-                    <div className="form-group">
-                          <label htmlFor="name">Enter your display name:</label>
-                         <input  
-                            id="name" 
-                             name="name" 
-                            value={name} 
-                            onChange={(e) => setName(e.target.value)} required 
-                         />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="rated">Enter your rating</label>
-                        <input
-                            type="number"
-                            id="rating"
-                            name="rating"
-                            value={rating}
-                            onChange={(e) => setRating(e.target.value)}
-                            min="1"
-                            max="5"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="comment">Comment:</label>
-                        <textarea
-                            id="comment"
-                            name="comment"
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                        />
-                    </div>
-                    <button type="submit">Submit Review</button>
-                </form>
-
-                    </main>
-        </Def>
+        
+                     <form onSubmit={handleSubmit}>
+                            <div className="row">
+                                <div className="form-group col-sm-12">
+                                    <label htmlFor="content">Content</label>
+                                    <textarea
+                                        required
+                                        value={review.content}
+                                        onChange={e => setReview({ ...review, content: e.target.value })}
+                                        className="form-control"
+                                        id="content"
+                                        name="content"
+                                    />
+                                </div>
+                             </div>
+            <div className="row">
+                <div className="form-group col-sm-4">
+                    <label htmlFor="state">Author</label>
+                    <select className="form-control" value={review.authorId} onChange={e => setReview({ ...review, authorId: e.target.value })}>
+                        {authorOptions}
+                    </select>
+                </div>
+                <div className="form-group col-sm-4">
+                    <label htmlFor="stars">Star Rating</label>
+                    <input
+                        value={review.stars}
+                        onChange={e => setReview({ ...review, stars: e.target.value })}
+                        type="range"
+                        step="0.5"
+                        min="1"
+                        max="5"
+                        id="stars"
+                        name="stars"
+                        className="form-control"
+                    />
+                </div>
+                <div className="form-group col-sm-4">
+                    <label htmlFor="review">Review</label>
+                    <input
+                        checked={movie.review}
+                        onClick={e => setReview({ ...review, review: e.target.checked })}
+                        type="checkbox"
+                        id="review"
+                        name="review"
+                        className="form-control"
+                    />
+                </div>
+                </div>
+            <input className="btn btn-primary" type="submit" value="Add Review" />
+        
+        </form>
     )
 }
 
