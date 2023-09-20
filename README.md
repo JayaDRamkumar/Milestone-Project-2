@@ -1,6 +1,7 @@
 # Milestone-Project-2
 NYU MERN milestone project
-We created a Movie rating website.
+The Modern Movie Portal is a movie rating website. We have the movies displayed with their title, rated, display picture genre and duration.
+We created it using MongoDB, Express, React, and Node.js. Thus website is used to create, read, update and delete movie reviews and ratings.
 By: Nathaniel Abramov, Jaya Ramkumar, Shanika Scott, Khamil Holub
 
 Basic Requirements:
