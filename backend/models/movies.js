@@ -6,7 +6,7 @@ const movieSchema = new mongoose.Schema({
   rated: { type: String, required: true },
   pic: String,
   genre: { type: String, required: true },
-  duration: { type: Number, required: true },
+  duration: { type: String, required: true },
   reviews: [{type: mongoose.Schema.Types.ObjectId, ref: 'Review'}]
 });
 
