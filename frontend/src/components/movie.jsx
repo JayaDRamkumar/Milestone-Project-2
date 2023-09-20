@@ -19,7 +19,7 @@ function movies (data) {
             {movie.genre}
           </p>
           <p className="text-center">
-            {movie.duration}
+            {movie.duration}pu
           </p>
           
           <img src={movie.pic} alt={movie.name}/>

@@ -4,7 +4,8 @@ const Def = require('./default')
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router"
 
-function AddReview({ movies, onSubmit }) {
+
+function AddReview({ movie, onSubmit }) {
 
     const [movies, setMovies] = useState([])
 
@@ -17,7 +18,7 @@ function AddReview({ movies, onSubmit }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`http://localhost:5000/movies`)
+            const response = await fetch(`http://localhost:5001/movies`)
             const users = await response.json()
             setComment({ ...comment, authorId: users[0]?.userId})
             setAuthors(users)
@@ -92,6 +93,7 @@ function AddReview({ movies, onSubmit }) {
             <input className="btn btn-primary" type="submit" value="Add Review" />
         
         </form>
+
     )
 }
 
