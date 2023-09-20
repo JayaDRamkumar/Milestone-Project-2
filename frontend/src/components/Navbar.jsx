@@ -13,6 +13,7 @@ function AppNavbar() {
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/">Home</Nav.Link>
         <Nav.Link as={Link} to="/about">About</Nav.Link>
+        <Nav.Link as={Link} to="/addMovie">Add Movie</Nav.Link>
       </Nav>
       <Form>
         <FormControl type="text" placeholder="Search" className="mr-sm-2" />

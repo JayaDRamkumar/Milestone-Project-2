@@ -1,6 +1,7 @@
 import React from 'react'
 import {Route, Link} from "react-router-dom";
 import AppNavbar from './components/Navbar'
+import Home from "./components/Home"
 
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
     <div className="App">
       <AppNavbar />
       <div className="container">
-        {/* Your content goes here */}
+        <Home/>
       </div>
     </div>
   );

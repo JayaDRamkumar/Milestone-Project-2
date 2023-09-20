@@ -1,22 +1,49 @@
-const React = require('react')
-const Def = require('./default')
-function home () {
-  return (
-    <Def>
-        
-        <main>
-            <h1>HOME</h1>
-            <div>
-                <img src="https://media.istockphoto.com/id/183306417/photo/film-reel.jpg?s=612x612&w=0&k=20&c=ncbrAgLU5fupgCpGp2mS-Exie1h7d-7Zn--vYGWo25I=" />
-            </div>
-            <a href="/movies">
-  <button className="btn-primary">Movies Page</button>
-</a>
+import { useEffect, useState } from 'react'
+import { useHistory } from "react-router";
 
-        </main>
-    </Def>
+function Home () {
+
+  const history = useHistory()
+  const [movies, setMovies] = useState([])
+
+  useEffect(() => {
+		const fetchData = async () => {
+			const response = await fetch(`http://localhost:5000/movies`)
+			const resData = await response.json()
+      console.log(resData)
+			setMovies(resData)
+		}
+		fetchData()
+	}, [])
+
+    let moviesFormatted = movies.map((movie) => {
+      return (
+        <div className="col-sm-6" key={movie._id}>
+          <h2>
+            <a href="#" onClick={() => history.push(`/movies/${movie._id}`)} >
+              {movie.title}
+            </a>
+          </h2>
+          <p className="text-center">
+            {movie.rated}
+          </p>
+          <img style={{ width: '200px' }} src={movie.pic} alt={movie.title} />
+          <p className="text-center">
+            Rated {movie.rated}, {movie.duration} Minutes
+          </p>
+        </div>
+      )
+    })
+  return (
+    <main>
+			<h1>Modern Movie Portal</h1>
+			<div className="row">
+				{moviesFormatted}
+			</div>
+		</main>
   )
 }
 
 
-module.exports = home
+export default Home;
+
