@@ -1,8 +1,9 @@
-const React = require('react')
-const Def = require('./default')
-
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router"
+import CommentCard from './CommentCard'
+import NewCommentForm from "./NewCommentForm";
   
-function movies (data) {
+function movieDetail (data) {
     let moviesFormatted = data.movies.map((movie, index) => {
       return (
         <div className="col-sm-6">
