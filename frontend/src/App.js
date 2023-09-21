@@ -10,19 +10,15 @@ import NewMovieForm from "./components/newMovie"
 function App() {
   return (
     <BrowserRouter>
-    <div>
       <AppNavbar />
-      <div className="container">
         <Switch>
         
-          <Route exact path="" component={Home} />
-          <Route path="/:_id" component={MovieDetails} />
-          <Route path="/movies/new" component={NewMovieForm} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/:_id" component={MovieDetails} />
+          <Route exact path="/movies/new" component={NewMovieForm} />
           
           
         </Switch>
-      </div>
-    </div>
   </BrowserRouter>
    
    

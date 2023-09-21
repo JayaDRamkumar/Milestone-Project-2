@@ -1,11 +1,11 @@
 const React = require('react')
-const Def = require('./default')
+
 
 
 function newReview(){
   
     return (
-        <Def>
+       
           <main>
             <h1>Add Your Movie Review</h1>
                  <form onSubmit={handleSubmit}>
@@ -43,7 +43,7 @@ function newReview(){
                 </form>
 
                     </main>
-        </Def>
+       
     )
 }
 
