@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 function MovieDetails() {
-  const { id } = useParams();
+  const { id } = useParams(); 
   const history = useHistory();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,9 +25,7 @@ function MovieDetails() {
     };
 
     fetchData();
-  }, [id]);
-
-
+  }, [id]); 
 
   return (
     <div>

@@ -6,21 +6,19 @@ import AppNavbar from './components/Navbar';
 import Home from './components/Home';
 import MovieDetails from './components/MoviesDetails';
 
+
 function App() {
   return (
     <BrowserRouter>
-      <div>
+     
         <AppNavbar />
-        <div className="container">
+       
           <Switch>
-          
-            <Route exact path="" component={Home} />
-            <Route path="/movies/:id" component={MovieDetails} />
-            
-            
+            <Route exact path="/" component={Home} />
+            <Route exact path="/movies" component={Home} />
+            <Route exact path="/movies/:id" component={MovieDetails} />
           </Switch>
-        </div>
-      </div>
+       
     </BrowserRouter>
   );
 }

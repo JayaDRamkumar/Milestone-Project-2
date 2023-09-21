@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const history = useHistory();
@@ -36,9 +37,7 @@ function Home() {
     moviesFormatted = movies.map((movie) => (
       <div className="col-sm-6" key={movie._id}>
         <h2>
-          <a href="#" onClick={() => history.push(`/movies/${movie._id}`)}>
-            {movie.title}
-          </a>
+          <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
         </h2>
         <p className="text-center">{movie.rated}</p>
         <img style={{ width: '200px' }} src={movie.pic} alt={movie.title} />
@@ -51,7 +50,7 @@ function Home() {
 
   return (
     <main>
-      <h1>Modern Movie Portal</h1>
+      <h1>Modern Movie Portal -HOME</h1>
       <div className="row">{moviesFormatted}</div>
     </main>
   );

@@ -15,7 +15,7 @@ function NewMovieForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Assuming your API endpoint is correctly configured
+  
     await fetch("http://localhost:5001/movies", {
       method: "POST",
       headers: {
