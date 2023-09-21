@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useHistory } from "react-router"
 
-function newMovieForm () {
+function NewMovieForm () {
 
     const history = useHistory()
     const [movie,setMovie] = useState({
@@ -14,7 +14,7 @@ function newMovieForm () {
     async function handleSubmit(e) {
 		e.preventDefault()
 
-		await fetch(`http://localhost:5000/movies`, {
+		await fetch(`http://localhost:5000/movies/new`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -22,10 +22,9 @@ function newMovieForm () {
 			body: JSON.stringify(movie)
 		})
 
-		history.push('/movies')
+		history.push('/movies/new')
 	}
     return (
-        <Def>
           <main>
             <h1>Add a New Movie</h1>
                  <form onSubmit={handleSubmit}>
@@ -81,10 +80,9 @@ function newMovieForm () {
                 </form>
 
                     </main>
-        </Def>
+
     )
 }
-
-module.exports = newMovieForm
+export default NewMovieForm
 
 

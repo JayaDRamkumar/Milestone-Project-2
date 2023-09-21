@@ -20,13 +20,10 @@ function Home () {
       return (
         <div className="col-sm-6" key={movie._id}>
           <h2>
-            <a href="#" onClick={() => history.push(`/movies/${movie._id}`)} >
+            <a href="#" onClick={() => history.push(`/${movie._id}`)} >
               {movie.title}
             </a>
           </h2>
-          <p className="text-center">
-            {movie.rated}
-          </p>
           <img style={{ width: '200px' }} src={movie.pic} alt={movie.title} />
           <p className="text-center">
             Rated {movie.rated}, {movie.duration} Minutes

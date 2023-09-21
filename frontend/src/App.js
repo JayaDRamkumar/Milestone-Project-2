@@ -1,17 +1,37 @@
-import React from 'react'
-import {Route, Link} from "react-router-dom";
+import React from 'react';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import AppNavbar from './components/Navbar'
 import Home from "./components/Home"
+import MovieDetails from "./components/movie"
+import NewMovieForm from "./components/newMovie"
+
 
 
 function App() {
   return (
-    <div className="App">
+    <BrowserRouter>
+    <div>
       <AppNavbar />
       <div className="container">
-        <Home/>
+        <Switch>
+        
+          <Route exact path="" component={Home} />
+          <Route path="/:_id" component={MovieDetails} />
+          <Route path="/movies/new" component={NewMovieForm} />
+          
+          
+        </Switch>
       </div>
     </div>
+  </BrowserRouter>
+   
+   
+    // <div className="App">
+    //   <AppNavbar />
+    //   <div className="container">
+    //     <Home/>
+    //   </div>
+    // </div>
   );
 }
 
