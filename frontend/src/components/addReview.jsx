@@ -1,9 +1,26 @@
-const React = require('react')
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 
 
+function AddReview({ onSubmit }) {
+  const [review, setReview] = useState({
+    content: "",
+    review: false,
+  });
 
-function newReview(){
-  
+  const history = useHistory();
+
+  useEffect(() => {
+    
+  }, []);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSubmit(review);
+
+   
+    history.push("/"); 
+  }
     return (
        
           <main>

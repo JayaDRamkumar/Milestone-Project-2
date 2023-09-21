@@ -2,42 +2,7 @@ const React = require('react')
 const Def = require('../default.jsx')
 
 function edit_form ({movie, id}) {
-    function EditPlaceForm() {
 
-	const history = useHistory()
-
-    const { placeId } = useParams()
-
-    const [place, setPlace] = useState({
-		name: '',
-		pic: '',
-		city: '',
-		state: '',
-		cuisines: ''
-	})
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const response = await fetch(`http://localhost:5000/places/${placeId}`)
-			const resData = await response.json()
-			setPlace(resData)
-		}
-		fetchData()
-	}, [ placeId ])
-
-	async function handleSubmit(e) {
-		e.preventDefault()
-
-		await fetch(`http://localhost:5000/places/${place.placeId}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(place)
-		})
-
-		history.push(`/places/${place.placeId}`)
-	}
 
     return (
         <Def>
