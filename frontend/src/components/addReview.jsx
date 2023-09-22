@@ -1,11 +1,28 @@
-const React = require('react')
-const Def = require('./default')
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 
 
-function newReview(){
-  
+function AddReview({ onSubmit }) {
+  const [review, setReview] = useState({
+    content: "",
+    review: false,
+  });
+
+  const history = useHistory();
+
+  useEffect(() => {
+    
+  }, []);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSubmit(review);
+
+   
+    history.push("/"); 
+  }
     return (
-        <Def>
+       
           <main>
             <h1>Add Your Movie Review</h1>
                  <form onSubmit={handleSubmit}>
@@ -43,7 +60,7 @@ function newReview(){
                 </form>
 
                     </main>
-        </Def>
+       
     )
 }
 
