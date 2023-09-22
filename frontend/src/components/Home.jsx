@@ -39,9 +39,9 @@ function Home() {
         <h2>
           <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
         </h2>
-        <p className="text-center">{movie.rated}</p>
+        <p className="text">{movie.rated}</p>
         <img style={{ width: '200px' }} src={movie.pic} alt={movie.title} />
-        <p className="text-center">
+        <p className="text">
           Rated {movie.rated}, {movie.duration} Minutes
         </p>
       </div>

@@ -25,7 +25,7 @@ function NewMovieForm() {
       body: JSON.stringify(movie),
     });
 
-    history.push("/movies");
+    history.push("/");
   }
 
   return (
@@ -98,7 +98,7 @@ function NewMovieForm() {
           <input
             className="btn btn-primary"
             type="submit"
-            value="Add A Movie"
+            value="Add Movie"
           />
         </form>
       </main>

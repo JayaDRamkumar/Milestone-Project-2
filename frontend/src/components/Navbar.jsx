@@ -14,7 +14,6 @@ function AppNavbar() {
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/">Home</Nav.Link>
         <Nav.Link as={Link} to="/movies/new">Add Movie</Nav.Link>
-        <Nav.Link as={Link} to="/about">About</Nav.Link>
 
       </Nav>
     

@@ -86,6 +86,22 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  try {
+    const movie = await Movies.findById(req.params.id);
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    await Movies.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Movie deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+
 // Add a review
 router.post('/:id/reviews', async (req, res) => {
   try {

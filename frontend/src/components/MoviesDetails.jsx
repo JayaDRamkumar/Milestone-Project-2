@@ -23,9 +23,20 @@ function MovieDetails() {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [id]); 
+
+  function editMovie() {
+		history.push(`/movies/${id}/edit`)
+	}
+
+  async function deleteMovie() {
+		await fetch(`http://localhost:5001/movies/${movie._id}`, {
+			method: 'DELETE'
+		})
+		history.push('/')
+	}
+
 
   return (
     <div>
@@ -42,6 +53,8 @@ function MovieDetails() {
             Rated {movie.rated}, {movie.duration} Minutes
           </p>
           {/* Add review form here */}
+          <button onClick={() => editMovie(movie._id)}>Edit</button>
+          <button onClick={() => deleteMovie(movie._id)}>Delete</button>
           <button onClick={() => history.goBack()}>Go Back</button>
         </div>
       )}
