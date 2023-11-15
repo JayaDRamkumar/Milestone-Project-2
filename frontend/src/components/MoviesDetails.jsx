@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 function MovieDetails() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const history = useHistory();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ function MovieDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/movies/${id}`);
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}movies/${id}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -25,7 +25,24 @@ function MovieDetails() {
     };
 
     fetchData();
-  }, [id]); 
+  }, [id]);
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}movies/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Movie deleted successfully, you can navigate to a different page
+        history.push('/movies');
+      } else {
+        throw new Error('Failed to delete movie');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div>
@@ -41,7 +58,9 @@ function MovieDetails() {
           <p>
             Rated {movie.rated}, {movie.duration} Minutes
           </p>
-          {/* Add review form here */}
+          {/* Delete button */}
+          <button onClick={handleDelete}>Delete Movie</button>
+          {/* Go Back button */}
           <button onClick={() => history.goBack()}>Go Back</button>
         </div>
       )}

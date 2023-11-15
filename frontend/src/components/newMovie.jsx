@@ -16,7 +16,7 @@ function NewMovieForm() {
     e.preventDefault();
 
   
-    await fetch("http://localhost:5001/movies", {
+    await fetch(`${process.env.REACT_APP_SERVER_URL}movies`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

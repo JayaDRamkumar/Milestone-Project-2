@@ -11,7 +11,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5001/movies');
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}movies`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
